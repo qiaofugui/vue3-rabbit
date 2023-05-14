@@ -17,6 +17,6 @@ onMounted(() => {
   <LayoutFixed />
   <LayoutNav />
   <LayoutHeader />
-  <RouterView />
+  <router-view />
   <LayoutFooter />
 </template>
