@@ -8,7 +8,6 @@ const categoryData = ref({})
 const getCategory = async () => {
   const { result: res } = await getCategoryAPI(route.params.id)
   categoryData.value = res
-  console.log(res)
 }
 onMounted(() => {
   getCategory()
@@ -18,6 +17,17 @@ watch(
   () => {
     getCategory()
   })
+
+// 获取banner
+import { getBannerAPI } from '@/apis/home'
+const bannerList = ref([])
+const getBanner = async () => {
+  const { result: res } = await getBannerAPI(2)
+  bannerList.value = res
+}
+onMounted(() => {
+  getBanner()
+})
 
 </script>
 
@@ -30,6 +40,17 @@ watch(
           <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
           <el-breadcrumb-item>{{categoryData.name}}</el-breadcrumb-item>
         </el-breadcrumb>
+      </div>
+      <!-- 轮播图 -->
+      <div class="home-banner">
+        <el-carousel height="500px">
+          <el-carousel-item
+            v-for="item in bannerList"
+            :key="item.id"
+          >
+            <img v-img-lazy="item.imgUrl">
+          </el-carousel-item>
+        </el-carousel>
       </div>
     </div>
   </div>
@@ -112,6 +133,18 @@ watch(
 
   .bread-container {
     padding: 25px 0;
+  }
+}
+
+.home-banner {
+  width: 1240px;
+  height: 500px;
+  margin: 0 auto;
+  z-index: 98;
+
+  img {
+    width: 100%;
+    height: 500px;
   }
 }
 </style>
