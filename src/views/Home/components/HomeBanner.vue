@@ -21,7 +21,7 @@ onMounted(() => {
         v-for="item in bannerList"
         :key="item.id"
       >
-        <img :src="item.imgUrl">
+        <img v-img-lazy="item.imgUrl">
       </el-carousel-item>
     </el-carousel>
   </div>

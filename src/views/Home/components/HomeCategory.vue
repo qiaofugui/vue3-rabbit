@@ -25,7 +25,7 @@ const categoryStore = useCategoryStore()
               :key="i.id"
             >
               <RouterLink to="/">
-                <img :alt="i.name" :src="i.picture"/>
+                <img :alt="i.name" v-img-lazy="i.picture"/>
                 <div class="info">
                   <p class="name ellipsis-2">
                     {{i.name}}

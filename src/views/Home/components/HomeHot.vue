@@ -26,8 +26,8 @@ onMounted(() => {
       >
         <RouterLink to="/">
           <img
-            :src="item.picture"
             :alt="item.title"
+            v-img-lazy="item.picture"
           />
           <p class="name">{{ item.title }}</p>
           <p class="alt">{{ item.alt }}</p>
