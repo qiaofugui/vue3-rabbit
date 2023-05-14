@@ -24,3 +24,10 @@ export function getHotAPI () {
     url: `/home/hot`,
   })
 }
+
+// 获取所有商品
+export const getGoodsAPI = () => {
+  return http({
+    url: '/home/goods'
+  })
+}
