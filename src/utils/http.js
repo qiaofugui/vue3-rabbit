@@ -5,6 +5,11 @@
   3. 请求拦截器
   4. 响应拦截器
 */
+/*
+  如果项目不同的业务模块需要不同的接口地址，可以创建多个实例
+  const http1 = axios.create({ baseURL: 'url1' })
+  const http2 = axios.create({ baseURL: 'url2' })
+*/
 
 import axios from 'axios'
 
