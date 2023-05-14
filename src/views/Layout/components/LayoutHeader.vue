@@ -1,4 +1,18 @@
-<script setup>
+<script setup name="LayoutHeader">
+import { onMounted, ref } from 'vue'
+import { getCategoryAPI } from '@/apis/layout'
+
+// 首页分类
+const categoryList = ref([])
+const getCategory = async () => {
+  const { result: res } = await getCategoryAPI()
+  categoryList.value = res
+}
+onMounted(() => {
+  getCategory()
+})
+
+
 
 </script>
 
@@ -12,7 +26,13 @@
         <li class="home">
           <RouterLink to="/">首页</RouterLink>
         </li>
-        <li>
+        <li
+          v-for="item in categoryList"
+          :key="item.id"
+        >
+          <RouterLink to="/">{{item.name}}</RouterLink>
+        </li>
+        <!-- <li>
           <RouterLink to="/">居家</RouterLink>
         </li>
         <li>
@@ -20,7 +40,7 @@
         </li>
         <li>
           <RouterLink to="/">服饰</RouterLink>
-        </li>
+        </li> -->
       </ul>
       <div class="search">
         <i class="iconfont icon-search"></i>
