@@ -1,4 +1,6 @@
 <script setup>
+import { useCategoryStore } from '@/stores/category.js'
+const categoryStore = useCategoryStore()
 import { useScroll } from '@vueuse/core'
 const { y } = useScroll(window)
 </script>
@@ -18,7 +20,13 @@ const { y } = useScroll(window)
         <li class="home">
           <RouterLink to="/">首页</RouterLink>
         </li>
-        <li>
+         <li
+          v-for="item in categoryStore.categoryList"
+          :key="item.id"
+        >
+          <RouterLink to="/">{{item.name}}</RouterLink>
+        </li>
+        <!-- <li>
           <RouterLink to="/">居家</RouterLink>
         </li>
         <li>
@@ -44,7 +52,7 @@ const { y } = useScroll(window)
         </li>
         <li>
           <RouterLink to="/">杂项</RouterLink>
-        </li>
+        </li> -->
       </ul>
 
       <div class="right">

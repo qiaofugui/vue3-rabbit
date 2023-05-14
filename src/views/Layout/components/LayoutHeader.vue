@@ -1,18 +1,6 @@
 <script setup name="LayoutHeader">
-import { onMounted, ref } from 'vue'
-import { getCategoryAPI } from '@/apis/layout'
-
-// 首页分类
-const categoryList = ref([])
-const getCategory = async () => {
-  const { result: res } = await getCategoryAPI()
-  categoryList.value = res
-}
-onMounted(() => {
-  getCategory()
-})
-
-
+import { useCategoryStore } from '@/stores/category.js'
+const categoryStore = useCategoryStore()
 
 </script>
 
@@ -27,7 +15,7 @@ onMounted(() => {
           <RouterLink to="/">首页</RouterLink>
         </li>
         <li
-          v-for="item in categoryList"
+          v-for="item in categoryStore.categoryList"
           :key="item.id"
         >
           <RouterLink to="/">{{item.name}}</RouterLink>
