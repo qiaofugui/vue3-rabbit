@@ -1,0 +1,32 @@
+// 定制主题（scss 变量替换方案）
+/*
+  1. 安装 -> scss npm i sass -D
+  2. 准备定制样式文件 -> styles/element/index.scss
+  3. 对 ElementPlus 的样式变量进行覆盖 -> 通知 Element 采用 scss 语言导入定制 scss 文件覆盖变量
+*/
+
+/* 只需要重写你需要的即可 */
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  $colors: (
+    'primary': (
+      // 主色
+      'base': #27ba9b,
+    ),
+    'success': (
+      // 成功色
+      'base': #1dc779,
+    ),
+    'warning': (
+      // 警告色
+      'base': #ffb302,
+    ),
+    'danger': (
+      // 危险色
+      'base': #e26237,
+    ),
+    'error': (
+      // 错误色
+      'base': #cf4444,
+    ),
+  )
+);
