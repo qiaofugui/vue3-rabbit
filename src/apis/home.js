@@ -10,3 +10,17 @@ export function getBannerAPI (distributionSite = 1) {
     url: `/home/banner?distributionSite=${distributionSite}`,
   })
 }
+
+// 获取新鲜好物列表
+export function getNewAPI (limit = 4) {
+  return http({
+    url: `/home/new?limit=${limit}`,
+  })
+}
+
+// 获取人气推荐列表
+export function getHotAPI () {
+  return http({
+    url: `/home/hot`,
+  })
+}
