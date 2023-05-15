@@ -24,7 +24,7 @@ onMounted(() => {
         v-for="item in newList"
         :key="item.id"
       >
-        <RouterLink to="/">
+        <RouterLink :to="`/detail/${item.id}`">
           <img
             v-img-lazy="item.picture"
             :alt="item.name"
