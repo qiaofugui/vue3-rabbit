@@ -1,22 +1,26 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, /* watch */ } from 'vue'
 import { getCategoryAPI } from '@/apis/category.js'
-import { useRoute } from 'vue-router'
+import { onBeforeRouteUpdate, useRoute } from 'vue-router'
 
 const route = useRoute()
 const categoryData = ref({})
-const getCategory = async () => {
-  const { result: res } = await getCategoryAPI(route.params.id)
+const getCategory = async (id = route.params.id) => {
+  const { result: res } = await getCategoryAPI(id)
   categoryData.value = res
 }
 onMounted(() => {
   getCategory()
 })
-watch(
-  () => route.params.id,
-  () => {
-    getCategory()
-  })
+// watch(
+//   () => route.params.id,
+//   () => {
+//     getCategory()
+//   })
+// 路由参数变化的时候，重新获取分类数据
+onBeforeRouteUpdate((to) => {
+  getCategory(to.params.id)
+})
 
 // 获取banner
 import { getBannerAPI } from '@/apis/home'
@@ -106,6 +110,7 @@ onMounted(() => {
       display: flex;
       padding: 0 32px;
       flex-wrap: wrap;
+      justify-content: space-around;
 
       li {
         width: 168px;

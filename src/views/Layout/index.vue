@@ -17,6 +17,8 @@ onMounted(() => {
   <LayoutFixed />
   <LayoutNav />
   <LayoutHeader />
+  <!-- 添加key 破坏复用机制 -->
+  <!-- <router-view :key="$route.fullPath" /> -->
   <router-view />
   <LayoutFooter />
 </template>
