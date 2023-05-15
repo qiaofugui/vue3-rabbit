@@ -27,14 +27,30 @@ const reqData = ref({
 const getGoodsList = async () => {
   const { result: res } = await getSubCategoryAPI(reqData)
   goodsList.value = res
-  console.log(res)
 }
 onMounted(() => {
   getGoodsList()
 })
 
-const handleClick = (pane) => {
-  reqData.value.sortField = pane.props.name
+const handleChange = (name) => {
+  // reqData.value.sortField = name
+  // getGoodsList()
+  switch (name) {
+    case 'publishTime':
+      getGoodsList()
+      return
+    case 'orderNum':
+      goodsList.value.items.sort((a, b) => b.orderNum - a.orderNum)
+      return
+    case 'priceMax':
+      goodsList.value.items.sort((a, b) => parseFloat(b.price) - parseFloat(a.price))
+      return
+    case 'priceMin':
+      goodsList.value.items.sort((a, b) => parseFloat(a.price - b.price))
+      return
+    default:
+      getGoodsList()
+  }
 }
 </script>
 
@@ -51,7 +67,8 @@ const handleClick = (pane) => {
     <div class="sub-container">
       <el-tabs
         type="card"
-        @tab-click="handleClick"
+        model-value="publishTime"
+        @tab-change="handleChange"
       >
         <el-tab-pane
           label="最新商品"
@@ -61,9 +78,17 @@ const handleClick = (pane) => {
           label="最高人气"
           name="orderNum"
         ></el-tab-pane>
-        <el-tab-pane
+        <!-- <el-tab-pane
           label="评论最多"
           name="evaluateNum"
+        ></el-tab-pane> -->
+        <el-tab-pane
+          label="最高价格"
+          name="priceMax"
+        ></el-tab-pane>
+        <el-tab-pane
+          label="最低价格"
+          name="priceMin"
         ></el-tab-pane>
       </el-tabs>
       <div class="body">
