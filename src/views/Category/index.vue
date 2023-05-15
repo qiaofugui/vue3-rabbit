@@ -40,7 +40,7 @@ const { bannerList } = useBanner()
             v-for="i in categoryData.children"
             :key="i.id"
           >
-            <RouterLink to="/">
+            <RouterLink :to="`/category/sub/${i.id}`">
               <img v-img-lazy="i.picture" />
               <p>{{ i.name }}</p>
             </RouterLink>
@@ -97,6 +97,7 @@ const { bannerList } = useBanner()
           text-align: center;
           display: block;
           font-size: 16px;
+          transition: all 0.3s;
 
           img {
             width: 100px;
