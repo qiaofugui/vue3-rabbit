@@ -1,37 +1,13 @@
 <script setup>
-import { onMounted, ref, /* watch */ } from 'vue'
-import { getCategoryAPI } from '@/apis/category.js'
-import { onBeforeRouteUpdate, useRoute } from 'vue-router'
+import GoodsItem from '@/views/Home/components/GoodsItem.vue'
 
-const route = useRoute()
-const categoryData = ref({})
-const getCategory = async (id = route.params.id) => {
-  const { result: res } = await getCategoryAPI(id)
-  categoryData.value = res
-}
-onMounted(() => {
-  getCategory()
-})
-// watch(
-//   () => route.params.id,
-//   () => {
-//     getCategory()
-//   })
-// 路由参数变化的时候，重新获取分类数据
-onBeforeRouteUpdate((to) => {
-  getCategory(to.params.id)
-})
+// 获取catehory
+import { useCategory } from './composables/useCategory.js'
+const { categoryData } = useCategory()
 
 // 获取banner
-import { getBannerAPI } from '@/apis/home'
-const bannerList = ref([])
-const getBanner = async () => {
-  const { result: res } = await getBannerAPI(2)
-  bannerList.value = res
-}
-onMounted(() => {
-  getBanner()
-})
+import { useBanner } from './composables/useBanner.js'
+const { bannerList } = useBanner()
 
 </script>
 
@@ -82,7 +58,7 @@ onMounted(() => {
         <div class="body">
           <GoodsItem
             v-for="good in item.goods"
-            :goods="good"
+            :good="good"
             :key="good.id"
           />
         </div>
