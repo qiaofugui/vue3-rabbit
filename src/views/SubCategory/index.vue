@@ -26,7 +26,7 @@ const reqData = ref({
 })
 const getGoodsList = async () => {
   const { result: res } = await getSubCategoryAPI(reqData)
-  goodsList.value = res
+  goodsList.value = res.items
 }
 onMounted(() => {
   getGoodsList()
@@ -40,16 +40,30 @@ const handleChange = (name) => {
       getGoodsList()
       return
     case 'orderNum':
-      goodsList.value.items.sort((a, b) => b.orderNum - a.orderNum)
+      goodsList.value.sort((a, b) => b.orderNum - a.orderNum)
       return
     case 'priceMax':
-      goodsList.value.items.sort((a, b) => parseFloat(b.price) - parseFloat(a.price))
+      goodsList.value.sort((a, b) => parseFloat(b.price) - parseFloat(a.price))
       return
     case 'priceMin':
-      goodsList.value.items.sort((a, b) => parseFloat(a.price - b.price))
+      goodsList.value.sort((a, b) => parseFloat(a.price - b.price))
       return
     default:
       getGoodsList()
+  }
+}
+
+// 触底加载
+const disabled = ref(false)
+const load = async () => {
+  // 获取下一页
+  reqData.value.page++
+  const { result: res } = await getSubCategoryAPI(reqData)
+  console.log(res)
+  goodsList.value = [...goodsList.value, ...res.items]
+  // 加载完毕 停止监听
+  if (res.items.length === 0) {
+    disabled.value = true
   }
 }
 </script>
@@ -91,10 +105,14 @@ const handleChange = (name) => {
           name="priceMin"
         ></el-tab-pane>
       </el-tabs>
-      <div class="body">
+      <div
+        class="body"
+        v-infinite-scroll="load"
+        :infinite-scroll-disabled="disabled"
+      >
         <!-- 商品列表-->
         <GoodsItem
-          v-for="good in goodsList.items"
+          v-for="good in goodsList"
           :key="good.id"
           :good="good"
         />
