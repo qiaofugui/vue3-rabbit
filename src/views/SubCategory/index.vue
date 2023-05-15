@@ -14,6 +14,28 @@ onMounted(() => {
   getCategoryData()
 })
 
+// 获取基础数据列表渲染
+import GoodsItem from '@/views/Home/components/GoodsItem.vue'
+import { getSubCategoryAPI } from '@/apis/category.js'
+const goodsList = ref([])
+const reqData = ref({
+  categoryId: route.params.id,
+  page: 1,
+  pageSize: 20,
+  sortField: 'publishTime',
+})
+const getGoodsList = async () => {
+  const { result: res } = await getSubCategoryAPI(reqData)
+  goodsList.value = res
+  console.log(res)
+}
+onMounted(() => {
+  getGoodsList()
+})
+
+const handleClick = (pane) => {
+  reqData.value.sortField = pane.props.name
+}
 </script>
 
 <template>
@@ -27,7 +49,10 @@ onMounted(() => {
       </el-breadcrumb>
     </div>
     <div class="sub-container">
-      <el-tabs>
+      <el-tabs
+        type="card"
+        @tab-click="handleClick"
+      >
         <el-tab-pane
           label="最新商品"
           name="publishTime"
@@ -43,6 +68,11 @@ onMounted(() => {
       </el-tabs>
       <div class="body">
         <!-- 商品列表-->
+        <GoodsItem
+          v-for="good in goodsList.items"
+          :key="good.id"
+          :good="good"
+        />
       </div>
     </div>
   </div>
