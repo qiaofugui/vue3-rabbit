@@ -9,3 +9,12 @@ export const getCategoryAPI = (id) => {
     }
   })
 }
+
+export const getCategoryFilterAPI = (id) => {
+  return http({
+    url:'/category/sub/filter',
+    params:{
+      id
+    }
+  })
+}
