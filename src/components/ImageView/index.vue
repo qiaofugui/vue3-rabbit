@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue"
+import { ref, watch } from "vue"
 
 // 图片列表
 const imageList = [
@@ -15,6 +15,42 @@ const activeIndex = ref(0)
 const enterHandle = (i) => {
   activeIndex.value = i
 }
+
+// 获取鼠标相对位置
+/*
+  1. 有效移动范围内的计算逻辑
+    横向：100 < elementX < 300, left = elementX - 小滑块宽度的一半
+    纵向：100 < elementY < 300, top = elementY - 小滑块高度的一半
+  2. 边界距离控制
+    横向：elementX > 300 left = 200   elementX < 100 left = 0
+    纵向：elementY > 300 top = 200    elementY < 100 top = 0
+*/
+import { useMouseInElement } from '@vueuse/core'
+const target = ref(null)
+const { elementX, elementY, isOutside } = useMouseInElement(target)
+// 监听elementX和elementY的变化，一旦变化，就更新小滑块的位置left/top
+const left = ref(0)
+const top = ref(0)
+watch([elementX, elementY], () => {
+  if (isOutside.value) return
+  // 有小范围内控制滑块距离
+  // 横向
+  if (elementX.value > 100 && elementX.value < 300) {
+    left.value = elementX.value - 100
+  }
+  // 纵向
+  if (elementY.value > 100 && elementY.value < 300) {
+    top.value = elementY.value - 100
+  }
+
+  // 边界距离控制
+  // 横向
+  if (elementX.value > 300) { left.value = 200 }
+  if (elementX.value < 100) { left.value = 0 }
+  // 纵向
+  if (elementY.value > 300) { top.value = 200 }
+  if (elementY.value < 100) { top.value = 0 }
+})
 </script>
 
 
@@ -25,14 +61,11 @@ const enterHandle = (i) => {
       class="middle"
       ref="target"
     >
-      <img
-        :src="imageList[activeIndex]"
-        alt=""
-      />
+      <img :src="imageList[activeIndex]" />
       <!-- 蒙层小滑块 -->
       <div
         class="layer"
-        :style="{ left: `0px`, top: `0px` }"
+        :style="{ left: `${left}px`, top: `${top}px` }"
       ></div>
     </div>
     <!-- 小图列表 -->
