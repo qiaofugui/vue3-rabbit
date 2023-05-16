@@ -12,7 +12,6 @@ const detailData = ref({})
 const getDetailData = async () => {
   const { result: res } = await getDetail(route.params.id)
   detailData.value = res
-  console.log(res)
 }
 onMounted(() => {
   getDetailData()
@@ -46,7 +45,7 @@ onMounted(() => {
           <div class="goods-info">
             <div class="media">
               <!-- 图片预览区 -->
-              <ImageView />
+              <ImageView :image-list="detailData.mainPictures" />
               <!-- 统计数量 -->
               <ul class="goods-sales">
                 <li>
