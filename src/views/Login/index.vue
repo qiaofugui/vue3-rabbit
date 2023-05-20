@@ -1,6 +1,15 @@
 <script setup>
 import { ref } from "vue";
 
+import { ElMessage } from 'element-plus'
+// import 'element-plus/es/components/message/style/css'
+import 'element-plus/theme-chalk/el-message.css'
+
+import { loginAPI } from '@/apis/user.js'
+
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 const loginFormRef = ref(null)
 const loginForm = ref({
   account: '',
@@ -32,9 +41,19 @@ const ruleForm = ref({
 })
 // 提交表单
 const doLogin = () => {
-  loginFormRef.value.validate((valid) => {
+  loginFormRef.value.validate(async (valid) => {
     if (valid) {
-      console.log(valid)
+      const { result: res } = await loginAPI(loginForm.value)
+      // heima288
+      // hm#qd@23!
+
+      // 提示用户
+      ElMessage({
+        message: '登录成功',
+        type: 'success',
+      })
+      // 跳转到首页
+      router.replace({ path: '/' })
     } else {
       return false
     }
