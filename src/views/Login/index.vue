@@ -1,5 +1,24 @@
 <script setup>
+import { ref } from "vue";
 
+const loginRef = ref(null)
+const agree = ref(false)
+const loginForm = ref({
+  account: '',
+  password: '',
+})
+const ruleForm = ref({
+  account: [
+    { required: true, message: '请输入用户名', trigger: 'blur' }
+  ],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    { min: 6, max: 13, message: '密码长度6~14', trigger: 'blur' },
+  ]
+})
+const agreeChange = (val) => {
+  agree.value = val
+}
 </script>
 
 
@@ -28,18 +47,39 @@
         <div class="account-box">
           <div class="form">
             <el-form
+              ref="ruleFormRef"
+              :model="loginForm"
+              :rules="ruleForm"
               label-position="right"
               label-width="60px"
               status-icon
             >
-              <el-form-item label="账户">
-                <el-input />
+              <el-form-item
+                label="账户"
+                prop="account"
+              >
+                <el-input
+                  placeholder="请输入用户名"
+                  v-model="loginForm.account"
+                />
               </el-form-item>
-              <el-form-item label="密码">
-                <el-input />
+              <el-form-item
+                label="密码"
+                prop="password"
+              >
+                <el-input
+                  type="password"
+                  show-password
+                  placeholder="请输入密码"
+                  v-model="loginForm.password"
+                />
               </el-form-item>
               <el-form-item label-width="22px">
-                <el-checkbox size="large">
+                <el-checkbox
+                  size="large"
+                  v-model="agree"
+                  @change="agreeChange"
+                >
                   我已同意隐私条款和服务条款
                 </el-checkbox>
               </el-form-item>
