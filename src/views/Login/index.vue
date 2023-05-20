@@ -2,10 +2,10 @@
 import { ref } from "vue";
 
 const loginRef = ref(null)
-const agree = ref(false)
 const loginForm = ref({
   account: '',
   password: '',
+  agree: false
 })
 const ruleForm = ref({
   account: [
@@ -14,11 +14,23 @@ const ruleForm = ref({
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
     { min: 6, max: 13, message: '密码长度6~14', trigger: 'blur' },
+  ],
+  agree: [
+    {
+      validator: (rule, value, callback) => {
+        // 自定义校验逻辑
+        // value：当前输入的数据
+        // callback：检验处理函数 校验通过调用
+        if (value) {
+          callback()
+        } else {
+          callback(new Error('请勾选同意再注册'))
+        }
+      },
+    }
   ]
 })
-const agreeChange = (val) => {
-  agree.value = val
-}
+
 </script>
 
 
@@ -74,11 +86,13 @@ const agreeChange = (val) => {
                   v-model="loginForm.password"
                 />
               </el-form-item>
-              <el-form-item label-width="22px">
+              <el-form-item
+                label-width="22px"
+                prop="agree"
+              >
                 <el-checkbox
                   size="large"
-                  v-model="agree"
-                  @change="agreeChange"
+                  v-model="loginForm.agree"
                 >
                   我已同意隐私条款和服务条款
                 </el-checkbox>
