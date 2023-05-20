@@ -2,6 +2,8 @@
 import DetailHot from './components/DetailHot.vue'
 import ImageView from '@/components/ImageView/index.vue'
 
+import XtxSku from '@/components/XtxSku/index.vue'
+
 import { onMounted, ref } from 'vue'
 import { getDetail } from '@/apis/detail.js'
 import { useRoute } from 'vue-router'
@@ -16,6 +18,11 @@ const getDetailData = async () => {
 onMounted(() => {
   getDetailData()
 })
+
+// sku 规格被操作时触发
+const skuChange = (sku) => {
+  console.log(sku)
+}
 
 </script>
 
@@ -95,6 +102,10 @@ onMounted(() => {
                 </dl>
               </div>
               <!-- sku组件 -->
+              <XtxSku
+                :goods="detailData"
+                @change="skuChange"
+              />
 
               <!-- 数据组件 -->
 
