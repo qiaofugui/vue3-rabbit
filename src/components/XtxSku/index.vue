@@ -14,7 +14,7 @@
             :class="{ selected: val.selected, disabled: val.disabled }"
             @click="clickSpecs(item, val)"
             v-if="val.picture"
-            :src="val.picture"
+            v-img-lazy="val.picture"
           />
           <span
             :class="{ selected: val.selected, disabled: val.disabled }"

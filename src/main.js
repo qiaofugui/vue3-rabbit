@@ -19,6 +19,10 @@ app.mount('#app')
 import { lazyPlugin } from '@/directives'
 app.use(lazyPlugin)
 
+// 引入全局组件
+import { componentPlugin } from '@/components/index.js'
+app.use(componentPlugin)
+
 // 测试接口函数
 // import { getCategory } from '@/apis/testAPI.js'
 // getCategory().then(res => console.log(res))
