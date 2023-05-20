@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 
-const loginRef = ref(null)
+const loginFormRef = ref(null)
 const loginForm = ref({
   account: '',
   password: '',
@@ -30,6 +30,16 @@ const ruleForm = ref({
     }
   ]
 })
+// 提交表单
+const doLogin = () => {
+  loginFormRef.value.validate((valid) => {
+    if (valid) {
+      console.log(valid)
+    } else {
+      return false
+    }
+  })
+}
 
 </script>
 
@@ -59,7 +69,7 @@ const ruleForm = ref({
         <div class="account-box">
           <div class="form">
             <el-form
-              ref="ruleFormRef"
+              ref="loginFormRef"
               :model="loginForm"
               :rules="ruleForm"
               label-position="right"
@@ -100,6 +110,7 @@ const ruleForm = ref({
               <el-button
                 size="large"
                 class="subBtn"
+                @click="doLogin"
               >点击登录</el-button>
             </el-form>
           </div>
