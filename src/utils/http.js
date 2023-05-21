@@ -16,6 +16,8 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
 
+import { useUserStore } from '@/stores/user.js'
+
 // 创建实例
 const http = axios.create({
   baseURL: 'http://pcapi-xiaotuxian-front-devtest.itheima.net',
@@ -24,7 +26,15 @@ const http = axios.create({
 
 // 请求拦截器
 http.interceptors.request.use(
-  config => config,
+  config => {
+    const userStore = useUserStore()
+    const token = userStore.userInfo.token
+    if (token) {
+      // config.headers.Authorization = 'Bearer ' + token
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  },
   err => Promise.reject(err)
 )
 
