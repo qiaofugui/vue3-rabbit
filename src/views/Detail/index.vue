@@ -148,6 +148,7 @@ const addCart = () => {
               <!-- 数据组件 -->
               <el-input-number
                 v-model="count"
+                :min="1"
                 @change="countChange"
               />
 
