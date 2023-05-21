@@ -17,6 +17,7 @@ import { ElMessage } from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
 
 import { useUserStore } from '@/stores/user.js'
+import router from '@/router';
 
 // 创建实例
 const http = axios.create({
@@ -42,10 +43,25 @@ http.interceptors.request.use(
 http.interceptors.response.use(
   res => res.data,
   err => {
+    const userStore = useUserStore()
+
     ElMessage({
       type: 'warning',
       message: err.response.data.message
     })
+
+    // 401 token 失效处理
+    // 1. 清除本地用户数据
+    // 2. 跳转到登录页
+    if (err.response.status === 401) {
+      userStore.clearUserInfo()
+      ElMessage({
+        type: 'warning',
+        message: '登录状态无效，请重新登录'
+      })
+      router.push('/login')
+    }
+
     return Promise.reject(err)
   }
 )
