@@ -5,9 +5,11 @@ import { ElMessage } from 'element-plus'
 // import 'element-plus/es/components/message/style/css'
 import 'element-plus/theme-chalk/el-message.css'
 
-import { loginAPI } from '@/apis/user.js'
+import { useUserStore } from '@/stores/user.js'
 
 import { useRouter } from 'vue-router'
+
+const userStore = useUserStore()
 
 const router = useRouter()
 const loginFormRef = ref(null)
@@ -43,7 +45,7 @@ const ruleForm = ref({
 const doLogin = () => {
   loginFormRef.value.validate(async (valid) => {
     if (valid) {
-      const { result: res } = await loginAPI(loginForm.value)
+      await userStore.getUserInfo(loginForm.value)
       // heima288
       // hm#qd@23!
 
@@ -126,11 +128,17 @@ const doLogin = () => {
                   我已同意隐私条款和服务条款
                 </el-checkbox>
               </el-form-item>
-              <el-button
-                size="large"
-                class="subBtn"
-                @click="doLogin"
-              >点击登录</el-button>
+              <el-tooltip
+                effect="light"
+                content="account: heima288 password: hm#qd@23!"
+                placement="bottom"
+              >
+                <el-button
+                  size="large"
+                  class="subBtn"
+                  @click="doLogin"
+                >点击登录</el-button>
+              </el-tooltip>
             </el-form>
           </div>
         </div>
