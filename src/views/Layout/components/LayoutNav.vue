@@ -1,7 +1,16 @@
 <script setup>
 import { useUserStore } from '@/stores/user.js'
+import { useRouter } from 'vue-router'
 const userStore = useUserStore()
 
+const router = useRouter()
+
+// 退出登录
+const logout = () => {
+  // 清除用户信息
+  userStore.clearUserInfo()
+  router.push('/login')
+}
 </script>
 
 <template>
@@ -19,7 +28,16 @@ const userStore = useUserStore()
               cancel-button-text="取消"
             >
               <template #reference>
-                <a href="javascript:;">退出登录</a>
+                <el-popconfirm
+                  title="确认退出吗?"
+                  confirm-button-text="确认"
+                  cancel-button-text="取消"
+                  @confirm="logout"
+                >
+                  <template #reference>
+                    <a href="javascript:;">退出登录</a>
+                  </template>
+                </el-popconfirm>
               </template>
             </el-popconfirm>
           </li>

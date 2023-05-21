@@ -16,10 +16,16 @@ export const useUserStore = defineStore('user', () => {
     userInfo.value = res
   }
 
+  // 退出登录，清除用户信息
+  const clearUserInfo = () => {
+    userInfo.value = {}
+  }
+
   // 3. 以对象的形式返回
   return {
     userInfo,
-    getUserInfo
+    getUserInfo,
+    clearUserInfo
   }
 }, {
   // 定义数据状态管理的持久化配置
