@@ -36,7 +36,7 @@ const countChange = (count) => {
 const addCart = () => {
   if (skuObj.skuId) {
     // 已选择规格
-    console.log('添加购物车',{
+    console.log('添加购物车', {
       id: detailData.value.id,
       name: detailData.value.name,
       picture: detailData.value.mainPictures[0],
