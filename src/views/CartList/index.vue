@@ -1,6 +1,11 @@
 <script setup>
 import { useCartStore } from '@/stores/cart.js'
 const cartStore = useCartStore()
+
+// 单选回调
+const singleCheck = (selected, skuId) => {
+  cartStore.singleCheck(selected, skuId)
+}
 </script>
 
 <template>
@@ -27,7 +32,10 @@ const cartStore = useCartStore()
               :key="i.id"
             >
               <td>
-                <el-checkbox />
+                <el-checkbox
+                  :model-value="i.selected"
+                  @change="(selected)=>singleCheck(selected,i.skuId)"
+                />
               </td>
               <td>
                 <div class="goods">
