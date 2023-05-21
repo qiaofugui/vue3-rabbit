@@ -19,6 +19,8 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
+
+
   return {
     cartList,
     addCart
