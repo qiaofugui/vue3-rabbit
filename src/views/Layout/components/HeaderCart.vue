@@ -51,6 +51,7 @@ const cartStore = useCartStore()
         <el-button
           size="large"
           type="primary"
+          @click="$router.push('/cartlist')"
         >去购物车结算</el-button>
       </div>
     </div>
