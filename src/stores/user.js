@@ -21,4 +21,7 @@ export const useUserStore = defineStore('user', () => {
     userInfo,
     getUserInfo
   }
+}, {
+  // 定义数据状态管理的持久化配置
+  persist: true,
 })
