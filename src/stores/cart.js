@@ -3,20 +3,46 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { computed } from 'vue';
 
+// 拿到 user 模块的数据
+import { useUserStore } from './user'
+
+// 需要的接口
+import { insertCartAPI, findNewCartListAPI } from '@/apis/cart.js'
+
 export const useCartStore = defineStore('cart', () => {
+  // 拿到 user 模块的数据
+  const userStore = useUserStore()
+  // 获取 token 判断是否登录
+  const isLogin = computed(() => userStore.userInfo.token)
+
   // 1. 定义 state
   const cartList = ref([])
 
   // 2. 定义 action - addCart
-  const addCart = (goods) => {
-    // 添加购物车操作
-    // 添加过 count + 1
-    // 没添加过 push
-    const item = cartList.value.find(item => item.skuId === goods.skuId)
-    if (item) {
-      item.count += 1
+  const addCart = async (goods) => {
+    if (isLogin.value) {
+      //  登录之后的加入购物车
+      // 调用加入购物车接口
+      const { skuId, count } = goods
+      // 加入到购物车
+      await insertCartAPI({ skuId, count })
+      // 获取最新的购物车列表
+      const res = await findNewCartListAPI()
+
+      // 用接口购物车列表覆盖本地购物车列表
+      cartList.value = res.result
     } else {
-      cartList.value.push(goods)
+      // 本地购物车
+
+      // 添加购物车操作
+      // 添加过 count + 1
+      // 没添加过 push
+      const item = cartList.value.find(item => item.skuId === goods.skuId)
+      if (item) {
+        item.count += 1
+      } else {
+        cartList.value.push(goods)
+      }
     }
   }
 
