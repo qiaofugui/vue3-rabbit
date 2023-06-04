@@ -5,7 +5,11 @@ import { defineStore } from 'pinia'
 
 import { loginAPI } from '@/apis/user.js'
 
+import { useCartStore } from './cartStore.js'
+
 export const useUserStore = defineStore('user', () => {
+  const cartStore = useCartStore()
+
   // 1. 定义管理数据 state
   const userInfo = ref({})
 
@@ -14,11 +18,15 @@ export const useUserStore = defineStore('user', () => {
     // 调用接口
     const { result: res } = await loginAPI({ account, password })
     userInfo.value = res
+    // 获取购物车列表
+    cartStore.updateNewCartList()
   }
 
   // 退出登录，清除用户信息
   const clearUserInfo = () => {
     userInfo.value = {}
+    // 清除购物车数据
+    cartStore.clearCart()
   }
 
   // 3. 以对象的形式返回

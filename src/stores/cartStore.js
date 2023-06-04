@@ -70,6 +70,11 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
+  // 清空购物车
+  const clearCart = () => {
+    cartList.value = []
+  }
+
   // 计算属性
   // 总商品数
   const allCount = computed(() => cartList.value.reduce((count, item) => count + item.count, 0))
@@ -107,7 +112,9 @@ export const useCartStore = defineStore('cart', () => {
     isAll,
     allCheck,
     selectedCount,
-    selectedPrice
+    selectedPrice,
+    clearCart,
+    updateNewCartList
   }
 }, {
   // 持久化
