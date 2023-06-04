@@ -16,22 +16,35 @@ const tabTypes = [
 const isOrderLazy = ref(true)
 // 订单列表
 const orderList = ref([])
+const totalOrder = ref(0)
 const params = ref({
   orderState: 0,
   page: 1,
   pageSize: 2
 })
 const getOrderList = async () => {
+  isOrderLazy.value = true
   const { result: res } = await getUserOrderAPI(params.value)
   orderList.value = res.items
   isOrderLazy.value = false
+  totalOrder.value = res.counts
 }
 onMounted(() => getOrderList())
 
 // tab切换
 const tabChange = (type) => {
-  isOrderLazy.value = true
   params.value.orderState = type
+  getOrderList()
+}
+
+// 切换页数
+const pageChange = (page) => {
+  params.value.page = page
+  getOrderList()
+}
+// 切换每页显示条数
+const handleSizeChange = (size) => {
+  params.value.pageSize = size
   getOrderList()
 }
 
@@ -161,7 +174,12 @@ const tabChange = (type) => {
           <div class="pagination-container">
             <el-pagination
               background
-              layout="prev, pager, next"
+              layout="prev, pager, next, sizes"
+              :page-sizes="[2, 4, 6, 8,10]"
+              @size-change="handleSizeChange"
+              :total="totalOrder"
+              :page-size="params.pageSize"
+              @current-change="pageChange"
             />
           </div>
         </div>
