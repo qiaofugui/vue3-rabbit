@@ -13,6 +13,7 @@ const tabTypes = [
   { name: "cancel", label: "已取消" }
 ]
 
+const isOrderLazy = ref(true)
 // 订单列表
 const orderList = ref([])
 const params = ref({
@@ -23,14 +24,22 @@ const params = ref({
 const getOrderList = async () => {
   const { result: res } = await getUserOrderAPI(params.value)
   orderList.value = res.items
+  isOrderLazy.value = false
 }
 onMounted(() => getOrderList())
+
+// tab切换
+const tabChange = (type) => {
+  isOrderLazy.value = true
+  params.value.orderState = type
+  getOrderList()
+}
 
 </script>
 
 <template>
   <div class="order-container">
-    <el-tabs>
+    <el-tabs @tab-change="tabChange">
       <!-- tab切换 -->
       <el-tab-pane
         v-for="item in tabTypes"
@@ -38,7 +47,10 @@ onMounted(() => getOrderList())
         :label="item.label"
       />
 
-      <div class="main-container">
+      <div
+        class="main-container"
+        v-loading="isOrderLazy"
+      >
         <div
           class="holder-container"
           v-if="orderList.length === 0"
