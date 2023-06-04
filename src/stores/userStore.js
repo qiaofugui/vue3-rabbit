@@ -7,6 +7,8 @@ import { loginAPI } from '@/apis/user.js'
 
 import { useCartStore } from './cartStore.js'
 
+import { mergeCartAPI } from '@/apis/cart.js'
+
 export const useUserStore = defineStore('user', () => {
   const cartStore = useCartStore()
 
@@ -18,11 +20,19 @@ export const useUserStore = defineStore('user', () => {
     // 调用接口
     const { result: res } = await loginAPI({ account, password })
     userInfo.value = res
+
+    // 合并购物车
+    await mergeCartAPI(cartStore.cartList.map(item => {
+      return {
+        skuId: item.skuId,
+        selected: item.selected,
+        count: item.count
+      }
+    }))
     // 获取购物车列表
     cartStore.updateNewCartList()
   }
 
-  // 退出登录，清除用户信息
   const clearUserInfo = () => {
     userInfo.value = {}
     // 清除购物车数据
