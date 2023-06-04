@@ -18,6 +18,19 @@ onMounted(() => getCheckInfo())
 // 控制切换地址弹窗的显示隐藏
 const toggleFlag = ref(false)
 
+const activeAddress = ref({})
+// 点击切换地址回调
+const switchAddress = (item) => {
+  activeAddress.value = item
+}
+// 确认切换地址
+const confirmSwitchAddress = () => {
+  if (!activeAddress.value.id) return
+  curAddress.value = activeAddress.value
+  toggleFlag.value = false
+  activeAddress.value = {}
+}
+
 </script>
 
 <template>
@@ -164,6 +177,8 @@ const toggleFlag = ref(false)
     <div class="addressWrapper">
       <div
         class="text item"
+        :class="{active: item.id === activeAddress.id}"
+        @click="switchAddress(item)"
         v-for="item in checkInfo.userAddresses"
         :key="item.id"
       >
@@ -176,8 +191,14 @@ const toggleFlag = ref(false)
     </div>
     <template #footer>
       <span class="dialog-footer">
-        <el-button>取消</el-button>
-        <el-button type="primary">确定</el-button>
+        <el-button @click="()=>{
+          activeAddress = {}
+          toggleFlag = false
+          }">取消</el-button>
+        <el-button
+          type="primary"
+          @click="confirmSwitchAddress"
+        >确定</el-button>
       </span>
     </template>
   </el-dialog>
