@@ -10,6 +10,7 @@ import SubCategory from '@/views/SubCategory/index.vue'
 import Detail from '@/views/Detail/index.vue'
 import CartList from '@/views/CartList/index.vue'
 import Checkout from '@/views/Checkout/index.vue'
+import Pay from '@/views/Pay/index.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,38 +23,43 @@ const router = createRouter({
     // },
     {
       path: '/',
-      name: 'layout',
+      name: 'Layout',
       component: Layout,
       children: [
         {
           path: '',
-          name: 'home',
+          name: 'Home',
           component: Home
         },
         {
           path: 'category/:id',
-          name: 'category',
+          name: 'Category',
           component: Category
         },
         {
           path: 'category/sub/:id',
-          name: 'subcategory',
+          name: 'Subcategory',
           component: SubCategory
         },
         {
           path: 'detail/:id',
-          name: 'detail',
+          name: 'Detail',
           component: Detail
         },
         {
           path: 'cartlist',
-          name: 'cartlist',
+          name: 'CartList',
           component: CartList
         },
         {
           path: 'checkout',
-          name: 'checkout',
+          name: 'Checkout',
           component: Checkout
+        },
+        {
+          path: 'pay',
+          name: 'Pay',
+          component: Pay
         },
       ]
     },
