@@ -5,7 +5,7 @@ import { ElMessage } from 'element-plus'
 // import 'element-plus/es/components/message/style/css'
 import 'element-plus/theme-chalk/el-message.css'
 
-import { useUserStore } from '@/stores/user.js'
+import { useUserStore } from '@/stores/userStore.js'
 
 import { useRouter } from 'vue-router'
 

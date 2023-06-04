@@ -4,10 +4,10 @@ import { ref } from 'vue';
 import { computed } from 'vue';
 
 // 拿到 user 模块的数据
-import { useUserStore } from './user'
+import { useUserStore } from './userStore'
 
 // 需要的接口
-import { insertCartAPI, findNewCartListAPI } from '@/apis/cart.js'
+import { insertCartAPI, findNewCartListAPI, delCartAPI } from '@/apis/cart.js'
 
 export const useCartStore = defineStore('cart', () => {
   // 拿到 user 模块的数据
@@ -18,6 +18,15 @@ export const useCartStore = defineStore('cart', () => {
   // 1. 定义 state
   const cartList = ref([])
 
+  // 获取最新购物车列表
+  const updateNewCartList = async () => {
+    // 获取最新的购物车列表
+    const res = await findNewCartListAPI()
+
+    // 用接口购物车列表覆盖本地购物车列表
+    cartList.value = res.result
+  }
+
   // 2. 定义 action - addCart
   const addCart = async (goods) => {
     if (isLogin.value) {
@@ -27,10 +36,7 @@ export const useCartStore = defineStore('cart', () => {
       // 加入到购物车
       await insertCartAPI({ skuId, count })
       // 获取最新的购物车列表
-      const res = await findNewCartListAPI()
-
-      // 用接口购物车列表覆盖本地购物车列表
-      cartList.value = res.result
+      updateNewCartList()
     } else {
       // 本地购物车
 
@@ -47,14 +53,21 @@ export const useCartStore = defineStore('cart', () => {
   }
 
   // 删除购物车
-  const delCart = (skuId) => {
-    // 思路1：找到要删除项的下标 - splice
-    const index = cartList.value.findIndex(item => item.skuId === skuId)
-    if (index !== -1) {
-      cartList.value.splice(index, 1)
-    }
+  const delCart = async (skuId) => {
+    if (isLogin.value) {
+      // 接口删除购物车
+      await delCartAPI([skuId])
+      // 获取最新的购物车列表
+      updateNewCartList()
+    } else {
+      // 思路1：找到要删除项的下标 - splice
+      const index = cartList.value.findIndex(item => item.skuId === skuId)
+      if (index !== -1) {
+        cartList.value.splice(index, 1)
+      }
 
-    // 思路2：过滤方法 - filter
+      // 思路2：过滤方法 - filter
+    }
   }
 
   // 计算属性

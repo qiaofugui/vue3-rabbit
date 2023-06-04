@@ -5,7 +5,7 @@ import { onMounted, ref } from 'vue'
 import { getDetail } from '@/apis/detail.js'
 import { useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { useCartStore } from '@/stores/cart.js'
+import { useCartStore } from '@/stores/cartStore.js'
 
 const cartStore = useCartStore()
 const route = useRoute()
