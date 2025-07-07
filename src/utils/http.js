@@ -21,7 +21,7 @@ import router from '@/router';
 
 // 创建实例
 const http = axios.create({
-  baseURL: 'http://pcapi-xiaotuxian-front-devtest.itheima.net',
+  baseURL: 'https://pcapi-xiaotuxian-front-devtest.itheima.net',
   timeout: 5000
 })
 
